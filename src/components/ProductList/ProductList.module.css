@@ -1,0 +1,51 @@
+.productList {
+  background: #111827;
+  border: 1px solid #242b3a;
+  border-radius: 12px;
+  padding: 12px;
+  color: #e5e7eb;
+  font-family: Inter, system-ui, Arial;
+}
+
+.tableWrapper {
+  overflow-x: auto;
+  max-height: 520px;
+  margin-top: 12px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th,
+.table td {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 1px solid #242b3a;
+}
+
+.table th {
+  font-weight: 600;
+  color: #cbd5e1;
+  position: sticky;
+  top: 0;
+  background: #111827;
+}
+
+.buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.buttons button {
+  background: linear-gradient(135deg,#22d3ee,#a78bfa);
+  color: #0b1020;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
