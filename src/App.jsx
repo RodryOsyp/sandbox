@@ -49,33 +49,41 @@ export default function App() {
       }}
     >
       <div style={{ maxWidth: 1200, margin: "0 auto", padding: 16 }}>
-        <Header setProducts={setProducts} setSelected={setSelected} q={q} setQ={setQ} route={route} setRoute={setRoute} loading={loading} setLoading={setLoading} setMsg={setMsg} />
+        <Header
+          setProducts={setProducts}
+          setSelected={setSelected}
+          q={q}
+          setQ={setQ}
+          route={route}
+          setRoute={setRoute}
+          loading={loading}
+          setLoading={setLoading}
+          setMsg={setMsg}
+        />
+
         {route === "list" && (
-          <div
-            style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}
-          >
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
             <ProductCreate
               API={API}
               setProducts={setProducts}
               setMsg={setMsg}
               setLoading={setLoading}
             />
-
-              <ProductList
-                API={API}
-                setSelected={setSelected}
-                setRoute={setRoute}
-                setEditId={setEditId}
-                setEditTitle={setEditTitle}
-                setEditPrice={setEditPrice}
-                setEditDesc={setEditDesc}
-                setEditCat={setEditCat}
-                setEditBrand={setEditBrand}
-                setProducts={setProducts}
-                setMsg={setMsg}
-                setLoading={setLoading}
-                filtered={filtered}/>
-                
+            <ProductList
+              API={API}
+              setSelected={setSelected}
+              setRoute={setRoute}
+              setEditId={setEditId}
+              setEditTitle={setEditTitle}
+              setEditPrice={setEditPrice}
+              setEditDesc={setEditDesc}
+              setEditCat={setEditCat}
+              setEditBrand={setEditBrand}
+              setProducts={setProducts}
+              setMsg={setMsg}
+              setLoading={setLoading}
+              filtered={filtered}
+            />
 
             {!!editId && (
               <div style={{ gridColumn: "1 / -1", ...panel }}>
@@ -140,9 +148,7 @@ export default function App() {
                         .then((r) => r.json())
                         .then((j) => {
                           setProducts((prev) =>
-                            prev.map((p) =>
-                              p.id === editId ? { ...p, ...j } : p
-                            )
+                            prev.map((p) => (p.id === editId ? { ...p, ...j } : p))
                           );
                           if (selected && selected.id === editId)
                             setSelected((s) => (s ? { ...s, ...j } : s));
@@ -197,6 +203,7 @@ export default function App() {
           </div>
         )}
       </div>
+
       <style>{`
         table th, table td { text-align: left }
         img { display: block }
@@ -211,16 +218,7 @@ const panel = {
   borderRadius: 12,
   padding: 12,
 };
-const th = {
-  padding: "8px 10px",
-  fontWeight: 600,
-  color: "#cbd5e1",
-  borderBottom: "1px solid #242b3a",
-  position: "sticky",
-  top: 0,
-  background: "#111827",
-};
-const td = { padding: "8px 10px", verticalAlign: "top" };
+
 const input = {
   padding: "10px 12px",
   borderRadius: 10,
@@ -247,4 +245,3 @@ const btnMuted = {
   fontWeight: 700,
   cursor: "pointer",
 };
-const btnMini = { ...btn, padding: "8px 10px", fontWeight: 700 };

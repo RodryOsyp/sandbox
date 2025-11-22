@@ -1,7 +1,55 @@
 import style from "./ProductList.module.css";
 import PropTypes from "prop-types";
 
-const ProductList = ({ API, setSelected, setRoute, setEditId, setEditTitle, setEditPrice, setEditDesc, setEditCat, setEditBrand, setProducts, setMsg, setLoading, filtered = [], }) => {
+const ProductList = ({
+  API,
+  setSelected,
+  setRoute,
+  setEditId,
+  setEditTitle,
+  setEditPrice,
+  setEditDesc,
+  setEditCat,
+  setEditBrand,
+  setProducts,
+  setMsg,
+  setLoading,
+  filtered = [],
+}) => {
+  const handlerOpenProduct = (p) => {
+    setLoading(true);
+    fetch(`${API}/products/${p.id}`)
+      .then((r) => r.json())
+      .then((j) => {
+        setSelected(j);
+        setRoute("detail");
+      })
+      .catch(() => setMsg("Помилка відкриття"))
+      .finally(() => setLoading(false));
+  };
+
+  const handlerEditProduct = (p) => {
+    setEditId(p.id);
+    setEditTitle(p.title ?? "");
+    setEditPrice(p.price ?? "");
+    setEditDesc(p.description ?? "");
+    setEditCat(p.category ?? "");
+    setEditBrand(p.brand ?? "");
+  };
+
+  const handlerDeleteProduct = (p) => {
+    setLoading(true);
+    setMsg("");
+    fetch(`${API}/products/${p.id}`, { method: "DELETE" })
+      .then((r) => r.json())
+      .then(() => {
+        setProducts((prev) => prev.filter((x) => x.id !== p.id));
+        setMsg(`Видалено ID ${p.id}`);
+      })
+      .catch(() => setMsg("Помилка видалення"))
+      .finally(() => setLoading(false));
+  };
+
   return (
     <div className={style.productList}>
       <h3>Список товарів</h3>
@@ -29,51 +77,9 @@ const ProductList = ({ API, setSelected, setRoute, setEditId, setEditTitle, setE
                 <td>{p.description}</td>
                 <td>
                   <div className={style.buttons}>
-                    <button
-                      onClick={() => {
-                        setLoading(true);
-                        fetch(`${API}/products/${p.id}`)
-                          .then((r) => r.json())
-                          .then((j) => {
-                            setSelected(j);
-                            setRoute("detail");
-                          })
-                          .catch(() => setMsg("Помилка відкриття"))
-                          .finally(() => setLoading(false));
-                      }}
-                    >
-                      Відкрити
-                    </button>
-                    <button
-                      onClick={() => {
-                        setEditId(p.id);
-                        setEditTitle(p.title ?? "");
-                        setEditPrice(p.price ?? "");
-                        setEditDesc(p.description ?? "");
-                        setEditCat(p.category ?? "");
-                        setEditBrand(p.brand ?? "");
-                      }}
-                    >
-                      Редагувати
-                    </button>
-                    <button
-                      onClick={() => {
-                        setLoading(true);
-                        setMsg("");
-                        fetch(`${API}/products/${p.id}`, { method: "DELETE" })
-                          .then((r) => r.json())
-                          .then(() => {
-                            setProducts((prev) =>
-                              prev.filter((x) => x.id !== p.id)
-                            );
-                            setMsg(`Видалено ID ${p.id}`);
-                          })
-                          .catch(() => setMsg("Помилка видалення"))
-                          .finally(() => setLoading(false));
-                      }}
-                    >
-                      Видалити
-                    </button>
+                    <button onClick={() => handlerOpenProduct(p)}>Відкрити</button>
+                    <button onClick={() => handlerEditProduct(p)}>Редагувати</button>
+                    <button onClick={() => handlerDeleteProduct(p)}>Видалити</button>
                   </div>
                 </td>
               </tr>
@@ -89,8 +95,8 @@ const ProductList = ({ API, setSelected, setRoute, setEditId, setEditTitle, setE
     </div>
   );
 };
+
 ProductList.propTypes = {
-  products: PropTypes.arrayOf(PropTypes.object).isRequired,
   filtered: PropTypes.arrayOf(PropTypes.object).isRequired,
   API: PropTypes.string.isRequired,
   setSelected: PropTypes.func.isRequired,
@@ -105,4 +111,5 @@ ProductList.propTypes = {
   setMsg: PropTypes.func.isRequired,
   setLoading: PropTypes.func.isRequired,
 };
+
 export default ProductList;

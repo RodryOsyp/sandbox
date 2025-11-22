@@ -7,84 +7,76 @@ const Header = ({ setSelected, setProducts, q, setQ, setRoute, setLoading, setMs
   const API = "https://dummyjson.com";
   const [viewId, setViewId] = useState("");
 
-  const handlerUpdateList = () => {
-    setRoute("list");
-    setSelected(null);
-    setMsg("");
-    setLoading(true);
-    fetch(`${API}/products?limit=100`)
-      .then((r) => r.json())
-      .then((j) =>
-        setProducts(Array.isArray(j.products) ? j.products : [])
-      )
-      .catch(() => setMsg("Помилка оновлення списку"))
-      .finally(() => setLoading(false));
-  }
+  const Handler = {
+    UpdateList: () => {
+      setRoute("list");
+      setSelected(null);
+      setMsg("");
+      setLoading(true);
+      fetch(`${API}/products?limit=100`)
+        .then((r) => r.json())
+        .then((j) =>
+          setProducts(Array.isArray(j.products) ? j.products : [])
+        )
+        .catch(() => setMsg("Помилка оновлення списку"))
+        .finally(() => setLoading(false));
+    },
+
+    FindProductByID: () => {
+      if (!viewId) return;
+      setLoading(true);
+      setMsg("");
+      fetch(`${API}/products/${viewId}`)
+        .then((r) => {
+          if (!r.ok) throw new Error();
+          return r.json();
+        })
+        .then((j) => {
+          setSelected(j);
+          setRoute("detail");
+        })
+        .catch(() => setMsg("Товар не знайдено"))
+        .finally(() => setLoading(false));
+    },
+  };
+
   return (
-    <div className={style.header}><header className={style.headerContainer}
-    >
-      <div className={style.headerLeft}>
+    <div className={style.header}>
+      <header className={style.headerContainer}>
+        <div className={style.headerLeft}>
+          <Button title="Список" onClick={Handler.UpdateList} />
+          <Button title="Відкрити за ID" onClick={Handler.FindProductByID} />
+          <input
+            placeholder="ID"
+            value={viewId}
+            onChange={(e) => setViewId(e.target.value)}
+            className={style.input}
+          />
+        </div>
 
-        <Button title="Список" onClick={handlerUpdateList} />
-        <Button onClick={() => {
-          if (!viewId) return;
-          setLoading(true);
-          setMsg("");
-          fetch(`${API}/products/${viewId}`)
-            .then((r) => {
-              if (!r.ok) throw new Error();
-              return r.json();
-            })
-            .then((j) => {
-              setSelected(j);
-              setRoute("detail");
-            })
-            .catch(() => setMsg("Товар не знайдено"))
-            .finally(() => setLoading(false));
-        }} title="Відкрити за ID" />
+        <div className={style.headerRight}>
+          <input
+            placeholder="Пошук"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            className={style.input}
+          />
+        </div>
 
-        <input
-          placeholder="ID"
-          value={viewId}
-          onChange={(e) => setViewId(e.target.value)}
-          className={style.input}
-        />
-      </div>
-      <div className={style.headerRight}>
-        <input
-          placeholder="Пошук"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          className={style.input}
-        />
-      </div>
-         
-        <Button onClick={() => {
-          setLoading(true);
-          setMsg("");
-          fetch(`${API}/products?limit=100`)
-            .then((r) => r.json())
-            .then((j) =>
-              setProducts(Array.isArray(j.products) ? j.products : [])
-            )
-            .catch(() => setMsg("Помилка завантаження списку"))
-            .finally(() => setLoading(false));
-        }} title="Оновити" />
-    </header>
+        <Button title="Оновити" onClick={Handler.UpdateList} />
+      </header>
     </div>
   )
 }
 
 Header.propTypes = {
-  setSelected: PropTypes.func,
-  q: PropTypes.string,
+  setSelected: PropTypes.func.isRequired,
+  q: PropTypes.string.isRequired,
   setQ: PropTypes.func.isRequired,
-  route: PropTypes.string,
-  setRoute: PropTypes.func,
-  loading: PropTypes.bool,
-  setLoading: PropTypes.func,
-  setMsg: PropTypes.func,
+  setRoute: PropTypes.func.isRequired,
+  setLoading: PropTypes.func.isRequired,
+  setMsg: PropTypes.func.isRequired,
   setProducts: PropTypes.func.isRequired,
 };
 
-export default Header
+export default Header;

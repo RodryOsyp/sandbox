@@ -86,6 +86,7 @@ function ProductCreate({ API, setProducts, setMsg, setLoading }) {
 }
 
 ProductCreate.propTypes = {
+    API: PropTypes.string.isRequired,
     setProducts: PropTypes.func.isRequired,
     setMsg: PropTypes.func,
     setLoading: PropTypes.func,
