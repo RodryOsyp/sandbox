@@ -1,0 +1,10 @@
+.container {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.inputs {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}

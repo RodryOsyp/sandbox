@@ -3,9 +3,10 @@ import Header from "./components/Header/Header";
 import ProductCreate from "./components/ProductCreate/ProductCreate";
 import ProductInfo from "./components/ProductInfo/ProductInfo";
 import ProductList from "./components/ProductList/ProductList";
-
+import UpdateProducts from "./components/UpdateProducts/UpdateProducts";
+import "./App.css";
+export const API = "https://dummyjson.com";
 export default function App() {
-  const API = "https://dummyjson.com";
   const [route, setRoute] = useState("list");
   const [products, setProducts] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -41,14 +42,8 @@ export default function App() {
 
   return (
     <div
-      style={{
-        fontFamily: "Inter, system-ui, Arial",
-        color: "#e5e7eb",
-        background: "#0f172a",
-        minHeight: "100vh",
-      }}
-    >
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: 16 }}>
+      className="wrapper">
+      <div className="container">
         <Header
           setProducts={setProducts}
           setSelected={setSelected}
@@ -62,7 +57,7 @@ export default function App() {
         />
 
         {route === "list" && (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div className="route">
             <ProductCreate
               API={API}
               setProducts={setProducts}
@@ -85,88 +80,32 @@ export default function App() {
               filtered={filtered}
             />
 
-            {!!editId && (
-              <div style={{ gridColumn: "1 / -1", ...panel }}>
-                <h3 style={{ marginTop: 0 }}>Оновити товар ID {editId}</h3>
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(5, 1fr)",
-                    gap: 8,
-                  }}
-                >
-                  <input
-                    placeholder="Назва"
-                    value={editTitle}
-                    onChange={(e) => setEditTitle(e.target.value)}
-                    style={input}
-                  />
-                  <input
-                    placeholder="Ціна"
-                    value={editPrice}
-                    onChange={(e) => setEditPrice(e.target.value)}
-                    style={input}
-                  />
-                  <input
-                    placeholder="Опис"
-                    value={editDesc}
-                    onChange={(e) => setEditDesc(e.target.value)}
-                    style={input}
-                  />
-                  <input
-                    placeholder="Категорія"
-                    value={editCat}
-                    onChange={(e) => setEditCat(e.target.value)}
-                    style={input}
-                  />
-                  <input
-                    placeholder="Бренд"
-                    value={editBrand}
-                    onChange={(e) => setEditBrand(e.target.value)}
-                    style={input}
-                  />
-                </div>
-                <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-                  <button
-                    style={btn}
-                    onClick={() => {
-                      const priceNum = Number(editPrice);
-                      const payload = {
-                        title: String(editTitle || "").trim() || undefined,
-                        price: Number.isFinite(priceNum) ? priceNum : undefined,
-                        description: String(editDesc || "").trim() || undefined,
-                        category: String(editCat || "").trim() || undefined,
-                        brand: String(editBrand || "").trim() || undefined,
-                      };
-                      setLoading(true);
-                      setMsg("");
-                      fetch(`${API}/products/${editId}`, {
-                        method: "PUT",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify(payload),
-                      })
-                        .then((r) => r.json())
-                        .then((j) => {
-                          setProducts((prev) =>
-                            prev.map((p) => (p.id === editId ? { ...p, ...j } : p))
-                          );
-                          if (selected && selected.id === editId)
-                            setSelected((s) => (s ? { ...s, ...j } : s));
-                          setMsg(`Оновлено ID ${j.id}`);
-                          setEditId("");
-                        })
-                        .catch(() => setMsg("Помилка оновлення"))
-                        .finally(() => setLoading(false));
-                    }}
-                  >
-                    Зберегти
-                  </button>
-                  <button style={btnMuted} onClick={() => setEditId("")}>
-                    Скасувати
-                  </button>
-                </div>
-              </div>
-            )}
+            <UpdateProducts
+              editId={editId}
+              editTitle={editTitle}
+              editPrice={editPrice}
+              editDesc={editDesc}
+              editCat={editCat}
+              editBrand={editBrand}
+              setEditId={setEditId}
+              setEditTitle={setEditTitle}
+              setEditPrice={setEditPrice}
+              setEditDesc={setEditDesc}
+              setEditCat={setEditCat}
+              setEditBrand={setEditBrand}
+              API={API}
+              setProducts={setProducts}
+              selected={selected}
+              setSelected={setSelected}
+              setMsg={setMsg}
+              setLoading={setLoading}
+              panel={panel}
+              input={input}
+              btn={btn}
+              btnMuted={btnMuted}
+            />
+
+
           </div>
         )}
 
@@ -190,14 +129,7 @@ export default function App() {
 
         {!!msg && (
           <div
-            style={{
-              marginTop: 16,
-              padding: 12,
-              background: "#0b1325",
-              border: "1px solid #1f2840",
-              borderRadius: 10,
-              color: "#cbd5e1",
-            }}
+            className="msg"
           >
             {loading ? "Зачекайте..." : msg}
           </div>

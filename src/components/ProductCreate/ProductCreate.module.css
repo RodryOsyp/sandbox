@@ -22,13 +22,3 @@
   color: #e5e7eb;
   outline: none;
 }
-
-.btn {
-  background: linear-gradient(135deg, #22d3ee, #a78bfa);
-  color: #0b1020;
-  border: none;
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-weight: 700;
-  cursor: pointer;
-}

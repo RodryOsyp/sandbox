@@ -1,8 +1,9 @@
 import style from "./ProductList.module.css";
 import PropTypes from "prop-types";
-
+import { API } from "../../App";
+import Thead from "./components/Thead";
+import TBody from "./components/TBody";
 const ProductList = ({
-  API,
   setSelected,
   setRoute,
   setEditId,
@@ -54,43 +55,17 @@ const ProductList = ({
     <div className={style.productList}>
       <h3>Список товарів</h3>
       <div className={style.tableWrapper}>
+        
         <table className={style.table}>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Назва</th>
-              <th>Ціна</th>
-              <th>Категорія</th>
-              <th>Бренд</th>
-              <th>Опис</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.map((p) => (
-              <tr key={p.id}>
-                <td>{p.id}</td>
-                <td>{p.title}</td>
-                <td>{p.price}</td>
-                <td>{p.category}</td>
-                <td>{p.brand}</td>
-                <td>{p.description}</td>
-                <td>
-                  <div className={style.buttons}>
-                    <button onClick={() => handlerOpenProduct(p)}>Відкрити</button>
-                    <button onClick={() => handlerEditProduct(p)}>Редагувати</button>
-                    <button onClick={() => handlerDeleteProduct(p)}>Видалити</button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-            {!filtered.length && (
-              <tr>
-                <td colSpan={7}>Нічого не знайдено</td>
-              </tr>
-            )}
-          </tbody>
+         <Thead />
+         <TBody
+          filtered={filtered}
+          handlerOpenProduct={handlerOpenProduct}
+          handlerEditProduct={handlerEditProduct}
+          handlerDeleteProduct={handlerDeleteProduct}
+         />
         </table>
+
       </div>
     </div>
   );

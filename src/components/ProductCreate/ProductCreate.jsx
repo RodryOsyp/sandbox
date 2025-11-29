@@ -2,8 +2,9 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./ProductCreate.module.css";
 import Button from "../../shared/Button/Button";
+import { API } from "../../App";
 
-function ProductCreate({ API, setProducts, setMsg, setLoading }) {
+function ProductCreate({ setProducts, setMsg, setLoading }) {
     const [formTitle, setFormTitle] = useState("");
     const [formPrice, setFormPrice] = useState("");
     const [formDesc, setFormDesc] = useState("");

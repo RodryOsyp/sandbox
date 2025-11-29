@@ -1,51 +1,48 @@
-import { useState } from 'react'
-import PropTypes from 'prop-types'
-import style from './Header.module.css'
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+import style from './Header.module.css';
 import Button from '../../shared/Button/Button';
-
+import { API } from "../../App";
 const Header = ({ setSelected, setProducts, q, setQ, setRoute, setLoading, setMsg }) => {
-  const API = "https://dummyjson.com";
   const [viewId, setViewId] = useState("");
 
-  const Handler = {
-    UpdateList: () => {
-      setRoute("list");
-      setSelected(null);
-      setMsg("");
-      setLoading(true);
-      fetch(`${API}/products?limit=100`)
-        .then((r) => r.json())
-        .then((j) =>
-          setProducts(Array.isArray(j.products) ? j.products : [])
-        )
-        .catch(() => setMsg("Помилка оновлення списку"))
-        .finally(() => setLoading(false));
-    },
+  const handlerUpdateList = () => {
+    setRoute("list");
+    setSelected(null);
+    setMsg("");
+    setLoading(true);
+    fetch(`${API}/products?limit=100`)
+      .then((r) => r.json())
+      .then((j) =>
+        setProducts(Array.isArray(j.products) ? j.products : [])
+      )
+      .catch(() => setMsg("Помилка оновлення списку"))
+      .finally(() => setLoading(false));
+  };
 
-    FindProductByID: () => {
-      if (!viewId) return;
-      setLoading(true);
-      setMsg("");
-      fetch(`${API}/products/${viewId}`)
-        .then((r) => {
-          if (!r.ok) throw new Error();
-          return r.json();
-        })
-        .then((j) => {
-          setSelected(j);
-          setRoute("detail");
-        })
-        .catch(() => setMsg("Товар не знайдено"))
-        .finally(() => setLoading(false));
-    },
+  const handlerFindProductById = () => {
+    if (!viewId) return;
+    setLoading(true);
+    setMsg("");
+    fetch(`${API}/products/${viewId}`)
+      .then((r) => {
+        if (!r.ok) throw new Error();
+        return r.json();
+      })
+      .then((j) => {
+        setSelected(j);
+        setRoute("detail");
+      })
+      .catch(() => setMsg("Товар не знайдено"))
+      .finally(() => setLoading(false));
   };
 
   return (
     <div className={style.header}>
       <header className={style.headerContainer}>
         <div className={style.headerLeft}>
-          <Button title="Список" onClick={Handler.UpdateList} />
-          <Button title="Відкрити за ID" onClick={Handler.FindProductByID} />
+          <Button title="Список" onClick={handlerUpdateList} />
+          <Button title="Відкрити за ID" onClick={handlerFindProductById} />
           <input
             placeholder="ID"
             value={viewId}
@@ -63,11 +60,11 @@ const Header = ({ setSelected, setProducts, q, setQ, setRoute, setLoading, setMs
           />
         </div>
 
-        <Button title="Оновити" onClick={Handler.UpdateList} />
+        <Button title="Оновити" onClick={handlerUpdateList} /> 
       </header>
     </div>
-  )
-}
+  );
+};
 
 Header.propTypes = {
   setSelected: PropTypes.func.isRequired,
