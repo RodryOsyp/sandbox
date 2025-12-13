@@ -3,7 +3,17 @@ import PropTypes from 'prop-types';
 import style from './Header.module.css';
 import Button from '../../shared/Button/Button';
 import { API } from "../../App";
-const Header = ({ setSelected, setProducts, q, setQ, setRoute, setLoading, setMsg }) => {
+import { useStore } from '../../store';
+const Header = () => {
+  const {
+    setRoute,
+    setProducts,
+    setSelected,
+    q, setQ,
+    setLoading,
+    setMsg,
+  } = useStore();
+
   const [viewId, setViewId] = useState("");
 
   const handlerUpdateList = () => {
@@ -58,9 +68,9 @@ const Header = ({ setSelected, setProducts, q, setQ, setRoute, setLoading, setMs
             onChange={(e) => setQ(e.target.value)}
             className={style.input}
           />
-        </div>
 
-        <Button title="Оновити" onClick={handlerUpdateList} /> 
+          <Button title="Оновити" onClick={handlerUpdateList} />
+        </div>
       </header>
     </div>
   );

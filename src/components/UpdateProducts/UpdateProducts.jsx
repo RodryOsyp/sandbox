@@ -1,30 +1,33 @@
 import PropTypes from "prop-types";
 import { API } from "../../App";
 import style from "./UpdateProducts.module.css";
+import { useStore } from "../../store";
 
-export default function UpdateProducts({
-    editId,
-    editTitle,
-    editPrice,
-    editDesc,
-    editCat,
-    editBrand,
-    setEditId,
-    setEditTitle,
-    setEditPrice,
-    setEditDesc,
-    setEditCat,
-    setEditBrand,
-    setProducts,
-    selected,
-    setSelected,
-    setMsg,
-    setLoading,
-    panel,
-    input,
-    btn,
-    btnMuted
-}) {
+export default function UpdateProducts() {
+    const {
+        editId,
+        editTitle,
+        editPrice,
+        editDesc,
+        editCat,
+        editBrand,
+        setEditId,
+        setEditTitle,
+        setEditPrice,
+        setEditDesc,
+        setEditCat,
+        setEditBrand,
+        setProducts,
+        selected,
+        setSelected,
+        setMsg,
+        setLoading,
+        panel,
+        input,
+        btn,
+        btnMuted
+    } = useStore();
+
     if (!editId) return null;
     const handlerUpdateProduct = () => {
         const priceNum = Number(editPrice);

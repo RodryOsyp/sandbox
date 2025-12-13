@@ -1,21 +1,24 @@
 import styles from "./ProductInfo.module.css";
 import PropTypes from "prop-types";
+import { API } from "../../App";
+import { useStore } from "../../store";
 
-export default function ProductInfo({
-  selected,
-  setSelected,
-  setRoute,
-  API,
-  setProducts,
-  setMsg,
-  setLoading,
-  setEditId,
-  setEditTitle,
-  setEditPrice,
-  setEditDesc,
-  setEditCat,
-  setEditBrand,
-}) {
+export default function ProductInfo() {
+  const {
+    selected,
+    setSelected,
+    setRoute,
+    setProducts,
+    setMsg,
+    setLoading,
+    setEditId,
+    setEditTitle,
+    setEditPrice,
+    setEditDesc,
+    setEditCat,
+    setEditBrand,
+  } = useStore();
+
   const handlerGoBack = () => setRoute("list");
 
   const handlerDeleteProduct = () => {

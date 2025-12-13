@@ -3,8 +3,10 @@ import PropTypes from "prop-types";
 import styles from "./ProductCreate.module.css";
 import Button from "../../shared/Button/Button";
 import { API } from "../../App";
+import { useStore } from "../../store";
 
-function ProductCreate({ setProducts, setMsg, setLoading }) {
+function ProductCreate() {
+    const { setProducts, setMsg, setLoading } = useStore();
     const [formTitle, setFormTitle] = useState("");
     const [formPrice, setFormPrice] = useState("");
     const [formDesc, setFormDesc] = useState("");
@@ -79,7 +81,7 @@ function ProductCreate({ setProducts, setMsg, setLoading }) {
                     onChange={(e) => setFormBrand(e.target.value)}
                     className={styles.input}
                 />
-            
+
                 <Button title="Створити" onClick={handleCreate} className={styles.btn} />
             </div>
         </div>
